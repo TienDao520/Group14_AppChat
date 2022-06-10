@@ -1,20 +1,20 @@
 {
   "project_info": {
-    "project_number": "627981801439",
-    "project_id": "info-6134-groupchat",
-    "storage_bucket": "info-6134-groupchat.appspot.com"
+    "project_number": "171702922223",
+    "project_id": "info6134-appchat",
+    "storage_bucket": "info6134-appchat.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:627981801439:android:aadd7f57671df8d42b966a",
+        "mobilesdk_app_id": "1:171702922223:android:9a2afd0eeccf8ae090641a",
         "android_client_info": {
           "package_name": "com.group14_appchat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "627981801439-icbm3kv9s91tm7upf5d3mekfq4ugtpjc.apps.googleusercontent.com",
+          "client_id": "171702922223-op4n4abbh9c4t46h8fqe8fc1qtva81hn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.group14_appchat",
@@ -22,28 +22,21 @@
           }
         },
         {
-          "client_id": "627981801439-flq6koc4vq1tfnbf3fvofefc8e27sn88.apps.googleusercontent.com",
+          "client_id": "171702922223-7l78t9i165tbsc0ffkotnvj3v0a5aii3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPPl1vWPEuA3ioX7uEIKu8JOD5e5SxTaE"
+          "current_key": "AIzaSyDuf-EfLKzpJtmUhKp1voINJbPDY2NaxxI"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "627981801439-flq6koc4vq1tfnbf3fvofefc8e27sn88.apps.googleusercontent.com",
+              "client_id": "171702922223-7l78t9i165tbsc0ffkotnvj3v0a5aii3.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "627981801439-id44e9nuohl1k2ri4g205hkbbsh9ppjb.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "vttrieu.example.groupchat"
-              }
             }
           ]
         }
