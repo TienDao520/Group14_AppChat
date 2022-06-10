@@ -1,7 +1,7 @@
 //yarn add @react-native-firebase/app
 import firebase from '@react-native-firebase/app';
 //yarn add @react-native-firebase/auth
-import '@react-native-firebase/auth';
+import auth from '@react-native-firebase/auth';
 //yarn add @react-native-firebase/database
 import '@react-native-firebase/database';
 //yarn add @react-native-firebase/firestore
@@ -26,6 +26,6 @@ if (!firebase.apps.length) {
 }
 
 const db = app.database();
-const auth = firebase.auth();
+// const auth = firebase.auth();
 
 export {db, auth};
