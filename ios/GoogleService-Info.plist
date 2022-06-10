@@ -3,23 +3,23 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>627981801439-qu1jor59pg0ks78j3gp105077l0dile6.apps.googleusercontent.com</string>
+	<string>171702922223-lg5c2majrluuba95q8sl2m4fneuhj91b.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.627981801439-qu1jor59pg0ks78j3gp105077l0dile6</string>
+	<string>com.googleusercontent.apps.171702922223-lg5c2majrluuba95q8sl2m4fneuhj91b</string>
 	<key>ANDROID_CLIENT_ID</key>
-	<string>627981801439-4fhsvbpq80jsq4ruskplrgk15v9jrbid.apps.googleusercontent.com</string>
+	<string>171702922223-g060q1bjnl1sqb68hlbvaqjff0mnv75p.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyC9jyu6caGPVgp9JYJVn3opAnIs32VKavE</string>
+	<string>AIzaSyD01uI5x649oIXC4ZP8TkJCrXZ_7i3SpyM</string>
 	<key>GCM_SENDER_ID</key>
-	<string>627981801439</string>
+	<string>171702922223</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.appchat</string>
+	<string>org.reactjs.native.example.Group14-AppChat</string>
 	<key>PROJECT_ID</key>
-	<string>info-6134-groupchat</string>
+	<string>info6134-appchat</string>
 	<key>STORAGE_BUCKET</key>
-	<string>info-6134-groupchat.appspot.com</string>
+	<string>info6134-appchat.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -31,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:627981801439:ios:6d707bfea08cdccc2b966a</string>
+	<string>1:171702922223:ios:751839afa091571e90641a</string>
 </dict>
 </plist>
