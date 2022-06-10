@@ -7,6 +7,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import SignUpScreen from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInScreen';
+import RoomScreen from '../screens/RoomScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,13 +48,18 @@ function AppNavigator(props) {
           }}
         />
 
-        {/* <Stack.Screen
-          name="RentingInputScreen"
-          component={RentingInputScreen}
+      <Stack.Screen
+          name="RoomScreen"
+          component={RoomScreen}
           options={{
-            title: "Renting Input"
+            headerTitle: () => (
+              <View style={styles.headerContainer}>
+                <Text style={styles.headerTitle}>Group Chat</Text>
+                <Text style={styles.headerTitle}>Group 14</Text>
+              </View>
+            ),
           }}
-        /> */}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

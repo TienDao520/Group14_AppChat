@@ -10,7 +10,8 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-import {auth} from '../FirebaseConfig';
+// import {auth} from '../FirebaseConfig';
+import auth from '@react-native-firebase/auth';
 
 const SignUpScreen = props => {
   const {navigation} = props;
@@ -31,19 +32,19 @@ const SignUpScreen = props => {
     }
 
     setIsLoading(true);
-    auth
+    auth()
       .createUserWithEmailAndPassword(email, password)
       .then(function (_firebaseUser) {
         Alert.alert('user registered!');
         setEmail('');
         setPassword('');
-        setToken(_firebaseUser);
+        navigation.navigate('SignInScreen');
       })
       .catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
         setIsLoading(false);
-        if (errorCode == 'auth/weak-password') {
+        if (errorCode === 'auth/weak-password') {
           Alert.alert('The password is too weak.');
         } else {
           Alert.alert(errorMessage);

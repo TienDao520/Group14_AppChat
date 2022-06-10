@@ -11,20 +11,9 @@ import {
   ScrollView,
 } from 'react-native';
 
-// import {auth} from '../FirebaseConfig';
 import auth from '@react-native-firebase/auth';
-//yarn add @react-native-async-storage/async-storage
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import {signInWithCredential} from 'firebase/auth';
-
-//Google signin
-//yarn add @react-native-google-signin/google-signin
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const SignInScreen = props => {
   const {navigation} = props;
@@ -80,10 +69,11 @@ const SignInScreen = props => {
 
   const loginWithFirebase = () => {
     setIsLoading(true);
-    auth
+    auth()
       .signInWithEmailAndPassword(email, password)
       .then(function (_firebaseUser) {
         setToken(_firebaseUser);
+        goToRoomScreen();
       })
       .catch(function (error) {
         var errorCode = error.code;
@@ -135,44 +125,21 @@ const SignInScreen = props => {
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
     // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
+    const response = auth().signInWithCredential(googleCredential);
+    response.then((data) => {
+      console.log("data: ", data)
+      navigation.navigate("RoomScreen")
+    })
   }
 
-  // const loginWithGoogle = async () => {
-  //   //   await GoogleSignin.hasPlayServices();
-  //   //   const userInfo = await GoogleSignin.signIn();
-  //   //   console.log(userInfo);
-  //   //   // this.setState({ userInfo });
-  //   // } catch (error) {
-  //   //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //   //     // user cancelled the login flow
-  //   //   } else if (error.code === statusCodes.IN_PROGRESS) {
-  //   //     // operation (e.g. sign in) is in progress already
-  //   //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //   //     // play services not available or outdated
-  //   //   } else {
-  //   //     // some other error happened
-  //   //   }
-  //   try {
-  //     // Get the users ID token
-  //     // const a = await GoogleSignin.signIn();
-  //     const {idToken} = await GoogleSignin.signIn();
 
-  //     console.log('idToken', idToken);
-  //     // Create a Google credential with the token
-  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  const goToSignUpScreen = () => {
+    navigation.navigate('SignUpScreen');
+  };
 
-  //     // // Sign-in the user with the credential
-  //     await auth()
-  //       .signInWithCredential(googleCredential)
-  //       .catch(error => {
-  //         console.log('Something went wrong with sign up: ', error);
-  //       });
-  //     console.log(googleCredential);
-  //   } catch (error) {
-  //     console.log({error});
-  //   }
-  // };
+  const goToRoomScreen = () => {
+    navigation.navigate('RoomScreen');
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -212,16 +179,7 @@ const SignInScreen = props => {
             <Button
               title="Sign In With Google"
               disabled={isLoading}
-              // onPress={() =>
-              //   loginWithGoogle().then(() =>
-              //     console.log('Signed in with Google!'),
-              //   )
-              // }
-              onPress={() =>
-                loginWithGoogle().then(() =>
-                  console.log('Signed in with Google!'),
-                )
-              }
+              onPress={loginWithGoogle}
             />
           </View>
           <View style={styles.button}>
@@ -232,7 +190,7 @@ const SignInScreen = props => {
             />
           </View>
           <View style={styles.button}>
-            <Button title="Sign Up" />
+            <Button title="Sign Up" onPress={goToSignUpScreen}/>
           </View>
         </View>
       </ScrollView>
