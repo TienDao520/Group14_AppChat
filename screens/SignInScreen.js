@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
+
 // import {auth} from '../FirebaseConfig';
 import auth from '@react-native-firebase/auth';
 //yarn add @react-native-async-storage/async-storage
@@ -33,8 +34,9 @@ const SignInScreen = props => {
 
   //Google configuration
   GoogleSignin.configure({
-    scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
-    webClientId: '627981801439-flq6koc4vq1tfnbf3fvofefc8e27sn88', // client ID of type WEB for your server (needed to verify user ID and offline access)
+    // scopes: ['https://www.googleapis.com/auth/drive.readonly'], // [Android] what API you want to access on behalf of the user, default is email and profile
+    webClientId:
+      '171702922223-7l78t9i165tbsc0ffkotnvj3v0a5aii3.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
     offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
     hostedDomain: '', // specifies a hosted domain restriction
     forceCodeForRefreshToken: true, // [Android] related to `serverAuthCode`, read the docs link below *.
@@ -45,9 +47,11 @@ const SignInScreen = props => {
     profileImageSize: 120, // [iOS] The desired height (and width) of the profile image. Defaults to 120px
   });
 
+  // GoogleSignin.configure();
+
   useEffect(() => {
     auth().onAuthStateChanged(user => {
-      console.log(user);
+      console.log('user: ', user);
       if (user != null) {
         console.log('The return user information: ', user);
         //ToDo: navigate to room page
@@ -55,7 +59,7 @@ const SignInScreen = props => {
     });
     async function fetchToken() {
       const token = await AsyncStorage.getItem('token');
-      if (token != '') {
+      if (token !== '') {
         //ToDo: navigate to room page
       }
     }
@@ -122,39 +126,52 @@ const SignInScreen = props => {
     // }
   };
 
-  const loginWithGoogle = async () => {
-    //   await GoogleSignin.hasPlayServices();
-    //   const userInfo = await GoogleSignin.signIn();
-    //   console.log(userInfo);
-    //   // this.setState({ userInfo });
-    // } catch (error) {
-    //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-    //     // user cancelled the login flow
-    //   } else if (error.code === statusCodes.IN_PROGRESS) {
-    //     // operation (e.g. sign in) is in progress already
-    //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-    //     // play services not available or outdated
-    //   } else {
-    //     // some other error happened
-    //   }
-    try {
-      // Get the users ID token
-      const {idToken} = await GoogleSignin.signIn();
+  async function loginWithGoogle() {
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
 
-      console.log('idToken', idToken);
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
 
-      // Sign-in the user with the credential
-      await auth()
-        .signInWithCredential(googleCredential)
-        .catch(error => {
-          console.log('Something went wrong with sign up: ', error);
-        });
-    } catch (error) {
-      console.log({error});
-    }
-  };
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
+  // const loginWithGoogle = async () => {
+  //   //   await GoogleSignin.hasPlayServices();
+  //   //   const userInfo = await GoogleSignin.signIn();
+  //   //   console.log(userInfo);
+  //   //   // this.setState({ userInfo });
+  //   // } catch (error) {
+  //   //   if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //   //     // user cancelled the login flow
+  //   //   } else if (error.code === statusCodes.IN_PROGRESS) {
+  //   //     // operation (e.g. sign in) is in progress already
+  //   //   } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //   //     // play services not available or outdated
+  //   //   } else {
+  //   //     // some other error happened
+  //   //   }
+  //   try {
+  //     // Get the users ID token
+  //     // const a = await GoogleSignin.signIn();
+  //     const {idToken} = await GoogleSignin.signIn();
+
+  //     console.log('idToken', idToken);
+  //     // Create a Google credential with the token
+  //     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  //     // // Sign-in the user with the credential
+  //     await auth()
+  //       .signInWithCredential(googleCredential)
+  //       .catch(error => {
+  //         console.log('Something went wrong with sign up: ', error);
+  //       });
+  //     console.log(googleCredential);
+  //   } catch (error) {
+  //     console.log({error});
+  //   }
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -194,6 +211,11 @@ const SignInScreen = props => {
             <Button
               title="Sign In With Google"
               disabled={isLoading}
+              // onPress={() =>
+              //   loginWithGoogle().then(() =>
+              //     console.log('Signed in with Google!'),
+              //   )
+              // }
               onPress={() =>
                 loginWithGoogle().then(() =>
                   console.log('Signed in with Google!'),
