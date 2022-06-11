@@ -14,6 +14,7 @@ import {
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
 const SignInScreen = props => {
   const {navigation} = props;
@@ -115,6 +116,35 @@ const SignInScreen = props => {
     // } catch ({message}) {
     //   alert(`Facebook Login Error: ${message}`);
     // }
+
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    // Sign-in the user with the credential
+    const response = auth().signInWithCredential(facebookCredential);
+    response.then(responseData => {
+      console.log('data: ', responseData);
+      navigation.navigate('RoomScreen');
+    });
   };
 
   async function loginWithGoogle() {
@@ -126,12 +156,11 @@ const SignInScreen = props => {
 
     // Sign-in the user with the credential
     const response = auth().signInWithCredential(googleCredential);
-    response.then((data) => {
-      console.log("data: ", data)
-      navigation.navigate("RoomScreen")
-    })
+    response.then(data => {
+      console.log('data: ', data);
+      navigation.navigate('RoomScreen');
+    });
   }
-
 
   const goToSignUpScreen = () => {
     navigation.navigate('SignUpScreen');
@@ -190,7 +219,7 @@ const SignInScreen = props => {
             />
           </View>
           <View style={styles.button}>
-            <Button title="Sign Up" onPress={goToSignUpScreen}/>
+            <Button title="Sign Up" onPress={goToSignUpScreen} />
           </View>
         </View>
       </ScrollView>

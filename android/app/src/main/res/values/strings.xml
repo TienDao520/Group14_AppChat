@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Group14_AppChat</string>
+    <string name="facebook_app_id">586041359429016</string>
+    <string name="facebook_client_token">cce3d4b979ae71193d7567e015be6045</string>
 </resources>
