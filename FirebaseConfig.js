@@ -25,7 +25,8 @@ if (!firebase.apps.length) {
   app = firebase.app(); // if already initialized, use that one
 }
 
-const db = app.database();
+// const db = app.database();
 // const auth = firebase.auth();
+const db = firebase.firestore();
 
 export {db, auth};

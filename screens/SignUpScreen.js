@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 // import {auth} from '../FirebaseConfig';
-import auth from '@react-native-firebase/auth';
+import {auth} from '../firebase/config';
 
 const SignUpScreen = props => {
   const {navigation} = props;
