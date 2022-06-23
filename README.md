@@ -145,3 +145,25 @@ React Native documentation is Creative Commons licensed, as found in the [LICENS
 
 [l]: https://github.com/facebook/react-native/blob/HEAD/LICENSE
 [ld]: https://github.com/facebook/react-native/blob/HEAD/LICENSE-docs
+
+<--Trieu noted-->
+If you face an issue thst Calling synchronous methods on native modules is not supported in Chrome, try the below steps:
+
+open file "node_modules/react-native/Libraries/BatchedBridge/MessageQueue.js" and replace function callNativeSyncHook with below: 
+
+callNativeSyncHook(
+    moduleID: number,
+    methodID: number,
+    params: any[],
+    onFail: ?Function,
+    onSucc: ?Function,
+  ): any {
+    const isDebuggingEnabled = (typeof atob !== 'undefined');
+    this.processCallbacks(moduleID, methodID, params, onFail, onSucc);
+    if(!isDebuggingEnabled)
+    {
+      return global.nativeCallSyncHook(moduleID, methodID, params);
+    }
+  }
+
+  // https://stackoverflow.com/questions/61067004/invariant-violation-calling-synchronous-methods-on-native-modules-is-not-suppor

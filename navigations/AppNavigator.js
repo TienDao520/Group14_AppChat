@@ -2,20 +2,19 @@ import React from 'react';
 import {View, Text, Platform, StyleSheet, Pressable, Alert} from 'react-native';
 //yarn add @react-navigation/native
 import {NavigationContainer} from '@react-navigation/native';
-//yarn add @react-navigation/native-stack
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createDrawerNavigator} from '@react-navigation/drawer';
 
 import SignUpScreen from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInScreen';
 import RoomScreen from '../screens/RoomScreen';
 
-const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
 function AppNavigator(props) {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        initialRouteName="Home"
+      <Drawer.Navigator
+        initialRouteName="SignInScreen"
         headerMode="screen"
         screenOptions={{
           headerTintColor: Platform.OS === 'android' ? 'white' : 'blue',
@@ -23,7 +22,7 @@ function AppNavigator(props) {
             backgroundColor: Platform.OS === 'android' ? 'green' : '',
           },
         }}>
-        <Stack.Screen
+        <Drawer.Screen
           name="SignInScreen"
           component={SignInScreen}
           options={{
@@ -35,7 +34,7 @@ function AppNavigator(props) {
             ),
           }}
         />
-        <Stack.Screen
+        <Drawer.Screen
           name="SignUpScreen"
           component={SignUpScreen}
           options={{
@@ -48,7 +47,7 @@ function AppNavigator(props) {
           }}
         />
 
-      <Stack.Screen
+        <Drawer.Screen
           name="RoomScreen"
           component={RoomScreen}
           options={{
@@ -60,7 +59,7 @@ function AppNavigator(props) {
             ),
           }}
         />
-      </Stack.Navigator>
+      </Drawer.Navigator>
     </NavigationContainer>
   );
 }
