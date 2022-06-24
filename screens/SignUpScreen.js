@@ -62,6 +62,7 @@ const SignUpScreen = props => {
       .set({
         email: email,
         userName: userName,
+        uid: uid,
       })
       .then(async () => {
         await AsyncStorage.setItem('userUid', uid);
