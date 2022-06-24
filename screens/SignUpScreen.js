@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 // import {auth} from '../FirebaseConfig';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUpScreen = props => {
   const {navigation} = props;
@@ -34,11 +36,12 @@ const SignUpScreen = props => {
     setIsLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(function (_firebaseUser) {
+      .then(function ({user}) {
         Alert.alert('user registered!');
         setEmail('');
         setPassword('');
-        navigation.navigate('SignInScreen');
+        AsyncStorage.setItem('userUid', user.uid);
+        createProfile(user.uid, user.email);
       })
       .catch(function (error) {
         var errorCode = error.code;
@@ -49,6 +52,18 @@ const SignUpScreen = props => {
         } else {
           Alert.alert(errorMessage);
         }
+      });
+  };
+
+  const createProfile = (uid, _email) => {
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .set({
+        email: _email,
+      })
+      .then(user => {
+        navigation.navigate('RoomScreen');
       });
   };
 

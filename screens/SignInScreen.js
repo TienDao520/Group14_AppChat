@@ -41,39 +41,20 @@ const SignInScreen = props => {
   // GoogleSignin.configure();
 
   useEffect(() => {
-    auth().onAuthStateChanged(user => {
-      console.log('user: ', user);
+    const subscriber = auth().onAuthStateChanged(user => {
       if (user != null) {
-        console.log('The return user information: ', user);
-        //ToDo: navigate to room page
+        AsyncStorage.setItem('userUid', user.uid);
+        goToRoomScreen();
       }
     });
-    async function fetchToken() {
-      const token = await AsyncStorage.getItem('token');
-      if (token !== '') {
-        //ToDo: navigate to room page
-      }
-    }
-    fetchToken();
+    return subscriber;
   }, []);
-
-  const setToken = firebaseUser => {
-    firebaseUser.user
-      .getIdToken()
-      .then(async token => {
-        await AsyncStorage.setItem('token', token);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
 
   const loginWithFirebase = () => {
     setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(function (_firebaseUser) {
-        setToken(_firebaseUser);
         goToRoomScreen();
       })
       .catch(function (error) {
@@ -89,34 +70,6 @@ const SignInScreen = props => {
   };
 
   const loginWithFacebook = async () => {
-    // try {
-    //   await Facebook.initializeAsync({
-    //     appId: '586041359429016',
-    //   });
-    //   const {type, token, expirationDate, permissions, declinedPermissions} =
-    //     await Facebook.logInWithReadPermissionsAsync({
-    //       permissions: ['public_profile'],
-    //     });
-    //   if (type === 'success') {
-    //     // // Get the user's name using Facebook's Graph API
-    //     // const response = await fetch(
-    //     //   `https://graph.facebook.com/me?access_token=${token}`
-    //     // );
-    //     // Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-    //     // Build Firebase credential with the Facebook access token.
-    //     const credential = firebase.auth.FacebookAuthProvider.credential(token);
-    //     // Sign in with credential from the Facebook user.
-    //     signInWithCredential(auth, credential).catch(error => {
-    //       // Handle Errors here.
-    //       console.log(error);
-    //     });
-    //   } else {
-    //     // type === 'cancel'
-    //   }
-    // } catch ({message}) {
-    //   alert(`Facebook Login Error: ${message}`);
-    // }
-
     // Attempt login with permissions
     const result = await LoginManager.logInWithPermissions([
       'public_profile',
@@ -142,7 +95,7 @@ const SignInScreen = props => {
     // Sign-in the user with the credential
     const response = auth().signInWithCredential(facebookCredential);
     response.then(responseData => {
-      console.log('data: ', responseData);
+      AccessToken.setItem('userUid', responseData.uid);
       navigation.navigate('RoomScreen');
     });
   };
@@ -156,8 +109,8 @@ const SignInScreen = props => {
 
     // Sign-in the user with the credential
     const response = auth().signInWithCredential(googleCredential);
-    response.then(data => {
-      console.log('data: ', data);
+    response.then(responseData => {
+      AccessToken.setItem('userUid', responseData.uid);
       navigation.navigate('RoomScreen');
     });
   }
