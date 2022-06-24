@@ -88,7 +88,7 @@ function AppNavigator() {
           component={RoomScreen}
           options={{
             headerTitle: () => (
-              <View style={styles.loginHeader}>
+              <View style={styles.roomHeader}>
                 <Text style={styles.headerTitle}>Group Chat</Text>
                 <Text style={styles.headerTitle}>Group 14</Text>
               </View>
@@ -122,6 +122,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 40,
   },
+  roomHeader: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 80,
+  },
+
   headerContainer: {
     width: '80%',
     alignItems: 'center',
