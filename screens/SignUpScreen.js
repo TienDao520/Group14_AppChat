@@ -19,6 +19,7 @@ const SignUpScreen = props => {
   const {navigation} = props;
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [userName, setUserName] = useState();
   const [isLoading, setIsLoading] = useState(false);
 
   const registerWithFirebase = () => {
@@ -36,12 +37,11 @@ const SignUpScreen = props => {
     setIsLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(function ({user}) {
+      .then(({user}) => {
         Alert.alert('user registered!');
         setEmail('');
         setPassword('');
-        AsyncStorage.setItem('userUid', user.uid);
-        createProfile(user.uid, user.email);
+        createProfile(user.uid);
       })
       .catch(function (error) {
         var errorCode = error.code;
@@ -55,14 +55,16 @@ const SignUpScreen = props => {
       });
   };
 
-  const createProfile = (uid, _email) => {
+  const createProfile = uid => {
     firestore()
       .collection('Users')
       .doc(uid)
       .set({
-        email: _email,
+        email: email,
+        userName: userName,
       })
-      .then(user => {
+      .then(async () => {
+        await AsyncStorage.setItem('userUid', uid);
         navigation.navigate('RoomScreen');
       });
   };
@@ -83,6 +85,14 @@ const SignUpScreen = props => {
               style={styles.input}
               value={email}
               onChangeText={value => setEmail(value)}
+            />
+          </View>
+          <View>
+            <Text>User name</Text>
+            <TextInput
+              style={styles.input}
+              value={userName}
+              onChangeText={value => setUserName(value)}
             />
           </View>
           <View>
