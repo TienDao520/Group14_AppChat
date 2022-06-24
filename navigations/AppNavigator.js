@@ -8,6 +8,7 @@ import {
   DrawerItem,
 } from '@react-navigation/drawer';
 import auth from '@react-native-firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import SignUpScreen from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInScreen';
@@ -16,35 +17,30 @@ import ProfileScreen from '../screens/ProfileScreen';
 
 const Drawer = createDrawerNavigator();
 
-// const CustomDrawerContent = props => {
-//   const logout = () => {
-//     auth()
-//       .signOut()
-//       .then(() => Alert('User signed out!'));
-//   };
-//   return (
-//     <DrawerContentScrollView {...props}>
-//       <DrawerItemList {...props} />
-//       <DrawerItem label="Logout" onPress={logout} />
-//     </DrawerContentScrollView>
-//   );
-// };
+const CustomDrawerContent = props => {
+  const {navigation} = props;
+  const logout = async () => {
+    await AsyncStorage.removeItem('userUid');
+    auth()
+      .signOut()
+      .then(() => {
+        Alert('User signed out!');
+      });
+    navigation.navigate('SignInScreen');
+  };
 
-function CustomDrawerContent(props) {
   return (
     <DrawerContentScrollView {...props}>
       <DrawerItemList {...props} />
-      <DrawerItem label="Help" onPress={() => alert('Link to help')} />
+      <DrawerItem label="Logout" onPress={logout} />
     </DrawerContentScrollView>
   );
-}
+};
 
 function AppNavigator() {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        // useLegacyImplementation
-        // drawerContent={props => <CustomDrawerContent {...props} />}
         initialRouteName="SignInScreen"
         headerMode="screen"
         screenOptions={{
@@ -52,7 +48,8 @@ function AppNavigator() {
           headerStyle: {
             backgroundColor: Platform.OS === 'android' ? 'green' : '',
           },
-        }}>
+        }}
+        drawerContent={props => <CustomDrawerContent {...props} />}>
         <Drawer.Screen
           name="SignInScreen"
           component={SignInScreen}
