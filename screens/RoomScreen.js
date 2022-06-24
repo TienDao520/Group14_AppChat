@@ -31,8 +31,8 @@ const RoomScreen = props => {
     }
     const subscriber = firestore()
       .collection('Rooms')
-      // .where('members', 'array-contains', uid)
-      .orderBy('createdDate', 'desc')
+      .where('members', 'array-contains', uid)
+      // .orderBy('createdDate', 'desc')
       .onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot?.forEach(documentSnapshot => {
@@ -41,8 +41,11 @@ const RoomScreen = props => {
             id: documentSnapshot.id,
             title: room.title,
             description: room.description,
+            createdDate: room.createdDate,
+            members: room.members,
           });
         });
+        data.sort((a, b) => b.createdDate - a.createdDate);
         setRooms(data);
       });
     return () => subscriber();
