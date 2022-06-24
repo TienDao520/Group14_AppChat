@@ -22,7 +22,8 @@ const AddRoomModal = props => {
       .collection('Rooms')
       .add({
         ...room,
-        createdDate: new Date.now(),
+        createdDate: new Date().getTime(),
+        members: [props.uid],
       })
       .then(() => {
         Alert.alert('Info', 'Room created successfully!');
