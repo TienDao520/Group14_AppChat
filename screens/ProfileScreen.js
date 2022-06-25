@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   Text,
   View,
@@ -11,34 +11,12 @@ import {
   Alert,
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {launchImageLibrary} from 'react-native-image-picker';
+import AppContext from '../store/app-context';
 
 const ProfileScreen = () => {
-  const [profile, setProfile] = useState({});
-  const [uid, setUid] = useState();
-
-  useEffect(() => {
-    const getUserUid = async () => {
-      const uid = await AsyncStorage.getItem('userUid');
-      uid && getUserInfo(uid);
-      setUid(uid);
-    };
-    getUserUid();
-  }, []);
-
-  const getUserInfo = _uid => {
-    firestore()
-      .collection('Users')
-      .doc(_uid)
-      .get()
-      .then(documentSnapshot => {
-        if (documentSnapshot.exists) {
-          const userInfo = documentSnapshot.data();
-          setProfile(userInfo);
-        }
-      });
-  };
+  const appCtx = useContext(AppContext);
+  const [profile, setProfile] = useState(appCtx.userInfo);
 
   const pickImageHandler = async () => {
     const userImg = await launchImageLibrary({
@@ -47,6 +25,9 @@ const ProfileScreen = () => {
       maxHeight: 200,
       maxWidth: 200,
     });
+    if (!userImg.assets?.length) {
+      return;
+    }
     const base64Image = `data:image/png;base64,${userImg.assets[0].base64}`;
     setProfile({...profile, image: base64Image});
   };
@@ -61,7 +42,7 @@ const ProfileScreen = () => {
   const saveProfile = () => {
     firestore()
       .collection('Users')
-      .doc(uid)
+      .doc(profile.uid)
       .update(profile)
       .then(() => {
         Alert.alert('Info', 'Update successfully!');

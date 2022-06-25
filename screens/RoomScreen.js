@@ -1,4 +1,11 @@
-import React, {useState, useEffect, useLayoutEffect, useMemo} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useContext,
+  useCallback,
+} from 'react';
 import {
   Text,
   View,
@@ -11,6 +18,7 @@ import {
 } from 'react-native';
 import AddRoomModal from '../components/AddRoomModal';
 import Card from '../components/Card';
+import AppContext from '../store/app-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import firestore from '@react-native-firebase/firestore';
 
@@ -19,6 +27,7 @@ const RoomScreen = props => {
   const [isShowCreateRoomModal, setIsShowCreateRoomModal] = useState(false);
   const [rooms, setRooms] = useState([]);
   const [uid, setUid] = useState();
+  const appCtx = useContext(AppContext);
 
   useMemo(async () => {
     const _uid = await AsyncStorage.getItem('userUid');
@@ -29,6 +38,7 @@ const RoomScreen = props => {
     if (!uid) {
       return;
     }
+    getUserInfo();
     const subscriber = firestore()
       .collection('Rooms')
       .where('members', 'array-contains', uid)
@@ -49,7 +59,7 @@ const RoomScreen = props => {
         setRooms(data);
       });
     return () => subscriber();
-  }, [uid]);
+  }, [getUserInfo, uid]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -71,6 +81,21 @@ const RoomScreen = props => {
   const showModalHandler = () => {
     setIsShowCreateRoomModal(true);
   };
+
+  const getUserInfo = useCallback(() => {
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .get()
+      .then(documentSnapshot => {
+        if (documentSnapshot.exists) {
+          appCtx.userInfo = {
+            ...documentSnapshot.data(),
+            uid: documentSnapshot.id,
+          };
+        }
+      });
+  }, [appCtx, uid]);
 
   const deleteRoom = room => {
     firestore()

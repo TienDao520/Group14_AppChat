@@ -55,6 +55,7 @@ const SignInScreen = props => {
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(function (_firebaseUser) {
+        setIsLoading(false);
         goToRoomScreen();
       })
       .catch(function (error) {
