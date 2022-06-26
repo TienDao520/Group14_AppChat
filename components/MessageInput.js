@@ -15,14 +15,13 @@ const MessageInput = () => {
     }
     const newMessage = {
       ...user,
+      roomId: room.id,
       message,
+      createdDate: new Date().getTime(),
     };
     firestore()
-      .collection('Rooms')
-      .doc(room.id)
-      .update({
-        messages: firestore.FieldValue.arrayUnion(newMessage),
-      })
+      .collection('Messages')
+      .add(newMessage)
       .then(() => {
         setMessage('');
       });
