@@ -35,16 +35,15 @@ const UserField = props => {
   return (
     <View>
       <Selectize
-        ref={userFieldRef}
+        ref={props.ref}
         chipStyle={styles.chip}
         chipIconStyle={styles.chipIcon}
         itemId="userName"
         items={users}
-        label="Users"
         listStyle={styles.list}
         tintColor="#028fb0"
         textInputProps={{
-          placeholder: 'Insert one or more emails',
+          placeholder: 'Insert one or more users',
           keyboardType: 'email-address',
         }}
         renderRow={(id, onPress, user) => (
@@ -68,7 +67,7 @@ const UserField = props => {
           />
         )}
       />
-      <Text style={styles.coveredContent}> </Text>
+      {/* <Text style={styles.coveredContent}> </Text> */}
     </View>
   );
 };
@@ -83,7 +82,7 @@ const styles = StyleSheet.create({
   },
   list: {
     backgroundColor: '#fff',
-    position: 'absolute',
+    // position: 'absolute',
   },
   listRow: {
     paddingVertical: 8,

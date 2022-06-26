@@ -42,7 +42,9 @@ const SignUpScreen = props => {
         Alert.alert('user registered!');
         setEmail('');
         setPassword('');
+        setUserName('');
         createProfile(user.uid);
+        setIsLoading(false);
       })
       .catch(function (error) {
         var errorCode = error.code;

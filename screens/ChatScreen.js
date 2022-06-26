@@ -1,16 +1,15 @@
-import React, {useLayoutEffect, useContext} from 'react';
+import React, {useLayoutEffect} from 'react';
 import {
   SafeAreaView,
   FlatList,
   View,
-  Text,
   TextInput,
   Image,
   StyleSheet,
   Pressable,
 } from 'react-native';
 import useAppContext from '../store/app-context';
-import UserField from '../components/UserField';
+import AddUserModal from '../components/AddUserModal';
 const ChatScreen = ({navigation}) => {
   const appCtx = useAppContext();
   const selectedRoom = appCtx.selectedRoom;
@@ -32,7 +31,7 @@ const ChatScreen = ({navigation}) => {
   const showModalHandler = () => {};
   return (
     <SafeAreaView>
-      <UserField></UserField>
+      <AddUserModal />
       <FlatList></FlatList>
       <View>
         <TextInput></TextInput>

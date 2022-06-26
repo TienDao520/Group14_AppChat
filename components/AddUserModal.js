@@ -8,8 +8,7 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-
+import UserField from '../components/UserField';
 
 const AddRoomModal = props => {
   const [selectedUsers, setSelectedUser] = useState([]);
@@ -29,31 +28,18 @@ const AddRoomModal = props => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <View style={styles.modalHeader}>
-            <Text style={styles.title}>Create room!</Text>
+            <Text style={styles.title}>Add Users!</Text>
           </View>
           <View style={styles.modalBody}>
-            <Text style={styles.modalText}>Title</Text>
-            <TextInput
-              style={styles.input}
-              value={room.title}
-              onChangeText={handleUpdateData.bind(this, 'title')}
-            />
-            <Text style={styles.modalText}>Description</Text>
-            <TextInput
-              style={styles.input}
-              value={room.description}
-              onChangeText={handleUpdateData.bind(this, 'description')}
-            />
+            <UserField />
           </View>
 
           <View style={styles.footer}>
             <Pressable style={styles.button} onPress={props.closeModalHandler}>
               <Text style={styles.textStyle}>Cancel</Text>
             </Pressable>
-            <Pressable
-              style={[styles.button, styles.buttonCreate]}
-              onPress={createNewRoom}>
-              <Text style={styles.textStyle}>Create</Text>
+            <Pressable style={[styles.button, styles.buttonCreate]}>
+              <Text style={styles.textStyle}>Add</Text>
             </Pressable>
           </View>
         </View>
@@ -78,11 +64,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  input: {
-    marginVertical: 5,
-    borderWidth: 1,
-    padding: 5,
   },
   modalBody: {
     width: '100%',
@@ -110,6 +91,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     marginLeft: 20,
     marginBottom: -20,
+    width: 80,
   },
   buttonCreate: {
     backgroundColor: 'green',
