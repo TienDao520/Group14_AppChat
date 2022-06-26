@@ -65,6 +65,11 @@ const ChatScreen = ({navigation}) => {
   const closeModalHandler = () => {
     setIsShowAddUserModal(false);
   };
+
+  const convertTimeToDate = timeString => {
+    const date = new Date(+timeString).toDateString();
+    return date;
+  };
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -77,9 +82,19 @@ const ChatScreen = ({navigation}) => {
           keyExtractor={item => item.id}
           renderItem={value => (
             <View>
-              <Card>
+              <Card style={styles.card}>
                 <View style={styles.cardBody}>
-                  <Text>{value.item.message}</Text>
+                  <Image
+                    style={styles.avatar}
+                    source={{uri: value.item.image}}
+                  />
+                  <View>
+                    <View style={styles.userInfo}>
+                      <Text>{value.item.userName}</Text>
+                      <Text>{convertTimeToDate(value.item.createdDate)}</Text>
+                    </View>
+                    <Text>{value.item.message}</Text>
+                  </View>
                 </View>
               </Card>
             </View>
@@ -95,6 +110,24 @@ const styles = StyleSheet.create({
   container: {
     height: '100%',
     width: '100%',
+  },
+  cardBody: {
+    padding: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  card: {
+    width: '70%',
+    justifyContent: 'flex-end',
+  },
+  avatar: {
+    height: 40,
+    width: 40,
+    borderRadius: 25,
+    margin: 5,
+  },
+  userInfo: {
+    flexDirection: 'row',
   },
   headerButton: {
     width: 30,
