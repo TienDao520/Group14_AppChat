@@ -3,17 +3,20 @@ import {
   SafeAreaView,
   FlatList,
   View,
-  TextInput,
   Image,
   StyleSheet,
   Pressable,
 } from 'react-native';
 import useAppContext from '../store/app-context';
 import AddUserModal from '../components/AddUserModal';
+import MessageInput from '../components/MessageInput';
+import Card from '../components/Card';
+
 const ChatScreen = ({navigation}) => {
   const appCtx = useAppContext();
   const selectedRoom = appCtx.selectedRoom;
   const [isShowAddUserModal, setIsShowAddUserModal] = useState(false);
+  const [messages] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,20 +41,33 @@ const ChatScreen = ({navigation}) => {
   };
   return (
     <SafeAreaView>
-      <AddUserModal
-        visible={isShowAddUserModal}
-        closeModalHandler={closeModalHandler}
-      />
-      <FlatList></FlatList>
-      <View>
-        <TextInput></TextInput>
-        <Image></Image>
+      <View style={styles.container}>
+        <AddUserModal
+          visible={isShowAddUserModal}
+          closeModalHandler={closeModalHandler}
+        />
+        <FlatList
+          data={messages}
+          keyExtractor={item => item.id}
+          renderItem={value => (
+            <View>
+              <Card>
+                <View style={styles.cardBody}></View>
+              </Card>
+            </View>
+          )}
+        />
+        <MessageInput />
       </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%',
+  },
   headerButton: {
     width: 30,
     height: 30,
