@@ -9,10 +9,10 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import AppContext from '../store/app-context';
+import useAppContext from '../store/app-context';
 import UserField from '../components/UserField';
 const ChatScreen = ({navigation}) => {
-  const appCtx = useContext(AppContext);
+  const appCtx = useAppContext();
   const selectedRoom = appCtx.selectedRoom;
 
   useLayoutEffect(() => {

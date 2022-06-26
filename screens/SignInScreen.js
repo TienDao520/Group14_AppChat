@@ -13,6 +13,7 @@ import {
 
 import auth from '@react-native-firebase/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useAppContext from '../store/app-context';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
@@ -21,6 +22,7 @@ const SignInScreen = props => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const appCtx = useAppContext();
 
   //Google configuration
   GoogleSignin.configure({
@@ -44,6 +46,7 @@ const SignInScreen = props => {
     const subscriber = auth().onAuthStateChanged(user => {
       if (user != null) {
         AsyncStorage.setItem('userUid', user.uid);
+        appCtx.userInfo.uid = user.uid;
         goToRoomScreen();
       }
     });

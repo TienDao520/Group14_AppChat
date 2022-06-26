@@ -17,4 +17,5 @@ export const AppContextProvider = props => {
   );
 };
 
-export default AppContext;
+const useAppContext = () => React.useContext(AppContext);
+export default useAppContext;

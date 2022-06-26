@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useContext,
-  useCallback,
-} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useCallback} from 'react';
 import {
   Text,
   View,
@@ -18,24 +11,20 @@ import {
 } from 'react-native';
 import AddRoomModal from '../components/AddRoomModal';
 import Card from '../components/Card';
-import AppContext from '../store/app-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import useAppContext from '../store/app-context';
 import firestore from '@react-native-firebase/firestore';
+import {useIsFocused} from '@react-navigation/native';
 
 const RoomScreen = props => {
   const {navigation} = props;
   const [isShowCreateRoomModal, setIsShowCreateRoomModal] = useState(false);
   const [rooms, setRooms] = useState([]);
-  const [uid, setUid] = useState();
-  const appCtx = useContext(AppContext);
-
-  useMemo(async () => {
-    const _uid = await AsyncStorage.getItem('userUid');
-    setUid(_uid);
-  }, []);
+  const appCtx = useAppContext();
+  const uid = appCtx.userInfo.uid;
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    if (!uid) {
+    if (!uid || !isFocused) {
       return;
     }
     getUserInfo();
@@ -59,7 +48,7 @@ const RoomScreen = props => {
         setRooms(data);
       });
     return () => subscriber();
-  }, [getUserInfo, uid]);
+  }, [getUserInfo, uid, isFocused]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

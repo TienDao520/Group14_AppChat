@@ -10,7 +10,7 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-// import {auth} from '../FirebaseConfig';
+import useAppContext from '../store/app-context';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -21,6 +21,7 @@ const SignUpScreen = props => {
   const [password, setPassword] = useState();
   const [userName, setUserName] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const appCtx = useAppContext();
 
   const registerWithFirebase = () => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -66,6 +67,7 @@ const SignUpScreen = props => {
       })
       .then(async () => {
         await AsyncStorage.setItem('userUid', uid);
+        appCtx.userInfo.uid = uid;
         navigation.navigate('RoomScreen');
       });
   };
