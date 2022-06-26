@@ -1,15 +1,17 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, forwardRef} from 'react';
 import {View, Pressable, Image, Text, StyleSheet} from 'react-native';
 import {Chip, Selectize} from 'react-native-material-selectize';
 import firestore from '@react-native-firebase/firestore';
+import useAppContext from '../store/app-context';
 
-const UserField = props => {
+const UserField = forwardRef((props, ref) => {
   const [users, setUsers] = useState([]);
-  const userFieldRef = useRef();
+  const currentRoomMembers = useAppContext().selectedRoom.members;
 
   useEffect(() => {
     const subscriber = firestore()
       .collection('Users')
+      .where('uid', 'not-in', currentRoomMembers)
       .onSnapshot(querySnapshot => {
         const data = [];
         querySnapshot?.forEach(documentSnapshot => {
@@ -19,11 +21,7 @@ const UserField = props => {
         setUsers(data);
       });
     return () => subscriber();
-  }, []);
-
-  const getSelectedUsers = () => {
-    return userFieldRef.current.getSelectedItems().result;
-  };
+  }, [currentRoomMembers]);
 
   const renderAvatar = user => {
     if (user.image) {
@@ -35,11 +33,12 @@ const UserField = props => {
   return (
     <View>
       <Selectize
-        ref={props.ref}
+        ref={ref}
         chipStyle={styles.chip}
         chipIconStyle={styles.chipIcon}
         itemId="userName"
         items={users}
+        selectedItems={[]}
         listStyle={styles.list}
         tintColor="#028fb0"
         textInputProps={{
@@ -70,7 +69,7 @@ const UserField = props => {
       {/* <Text style={styles.coveredContent}> </Text> */}
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   chip: {

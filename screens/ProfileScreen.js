@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
-import AppContext from '../store/app-context';
+import useAppContext from '../store/app-context';
 
 const ProfileScreen = () => {
-  const appCtx = useContext(AppContext);
+  const appCtx = useAppContext();
   const [profile, setProfile] = useState(appCtx.userInfo);
 
   const pickImageHandler = async () => {

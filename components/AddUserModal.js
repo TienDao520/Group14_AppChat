@@ -1,21 +1,43 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Alert,
-  Text,
-  TextInput,
-  Modal,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import React, {useRef} from 'react';
+import {View, Alert, Text, Modal, StyleSheet, Pressable} from 'react-native';
 import UserField from '../components/UserField';
+import useAppContext from '../store/app-context';
+import firestore from '@react-native-firebase/firestore';
 
 const AddRoomModal = props => {
-  const [selectedUsers, setSelectedUser] = useState([]);
+  const usersFieldRef = useRef();
+  const selectedRoom = useAppContext().selectedRoom;
 
-  const addUsersToRoom = () => {};
+  const addUsersToRoom = () => {
+    const selectedUserNames = usersFieldRef.current.getSelectedItems().result;
+    if (!selectedUserNames.length) {
+      return;
+    }
+    const selectedUsers =
+      usersFieldRef.current.getSelectedItems().entities.item;
+    const selectedUserUids = [];
+    for (const key in selectedUsers) {
+      const uid = selectedUsers[key].uid;
+      if (!selectedRoom?.members.includes(uid)) {
+        selectedUserUids.push(uid);
+      }
+    }
+    selectedRoom.members = [...selectedRoom.members, ...selectedUserUids];
+    updateRoomMembers();
+  };
 
-  const handleUpdateData = (field, value) => {};
+  const updateRoomMembers = () => {
+    firestore()
+      .collection('Rooms')
+      .doc(selectedRoom.id)
+      .update({
+        members: selectedRoom.members,
+      })
+      .then(() => {
+        Alert.alert('Info', 'Users added successfully!');
+      });
+    props.closeModalHandler();
+  };
 
   return (
     <Modal
@@ -31,14 +53,16 @@ const AddRoomModal = props => {
             <Text style={styles.title}>Add Users!</Text>
           </View>
           <View style={styles.modalBody}>
-            <UserField />
+            <UserField ref={usersFieldRef} />
           </View>
 
           <View style={styles.footer}>
             <Pressable style={styles.button} onPress={props.closeModalHandler}>
               <Text style={styles.textStyle}>Cancel</Text>
             </Pressable>
-            <Pressable style={[styles.button, styles.buttonCreate]}>
+            <Pressable
+              style={[styles.button, styles.buttonCreate]}
+              onPress={addUsersToRoom}>
               <Text style={styles.textStyle}>Add</Text>
             </Pressable>
           </View>

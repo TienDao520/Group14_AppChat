@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useState, useLayoutEffect} from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -13,6 +13,7 @@ import AddUserModal from '../components/AddUserModal';
 const ChatScreen = ({navigation}) => {
   const appCtx = useAppContext();
   const selectedRoom = appCtx.selectedRoom;
+  const [isShowAddUserModal, setIsShowAddUserModal] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -28,10 +29,19 @@ const ChatScreen = ({navigation}) => {
     });
   }, [navigation, selectedRoom]);
 
-  const showModalHandler = () => {};
+  const showModalHandler = () => {
+    setIsShowAddUserModal(true);
+  };
+
+  const closeModalHandler = () => {
+    setIsShowAddUserModal(false);
+  };
   return (
     <SafeAreaView>
-      <AddUserModal />
+      <AddUserModal
+        visible={isShowAddUserModal}
+        closeModalHandler={closeModalHandler}
+      />
       <FlatList></FlatList>
       <View>
         <TextInput></TextInput>
