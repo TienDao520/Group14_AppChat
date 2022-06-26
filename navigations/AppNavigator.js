@@ -14,6 +14,7 @@ import SignUpScreen from '../screens/SignUpScreen';
 import SignInScreen from '../screens/SignInScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -108,6 +109,17 @@ function AppNavigator() {
               </View>
             ),
             title: 'Profile',
+          }}
+        />
+
+        <Drawer.Screen
+          name="ChatScreen"
+          component={ChatScreen}
+          options={{
+            title: 'chatScreen',
+            drawerItemStyle: {
+              display: 'none',
+            },
           }}
         />
       </Drawer.Navigator>

@@ -10,35 +10,13 @@ import {
 } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
+
 const AddRoomModal = props => {
-  const [room, setRoom] = useState({title: '', description: ''});
+  const [selectedUsers, setSelectedUser] = useState([]);
 
-  const createNewRoom = () => {
-    if (!room.title || !room.description) {
-      Alert.alert('Warning!', 'Please input all fields!');
-      return;
-    }
-    firestore()
-      .collection('Rooms')
-      .add({
-        ...room,
-        createdDate: new Date().getTime(),
-        members: [props.uid],
-      })
-      .then(() => {
-        Alert.alert('Info', 'Room created successfully!');
-        room.title = '';
-        room.description = '';
-        props.closeModalHandler();
-      });
-  };
+  const addUsersToRoom = () => {};
 
-  const handleUpdateData = (field, value) => {
-    setRoom(state => ({
-      ...state,
-      [field]: value,
-    }));
-  };
+  const handleUpdateData = (field, value) => {};
 
   return (
     <Modal

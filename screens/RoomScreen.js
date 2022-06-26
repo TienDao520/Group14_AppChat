@@ -107,6 +107,11 @@ const RoomScreen = props => {
       });
   };
 
+  const goToChatScreen = selectedRoom => {
+    appCtx.selectedRoom = selectedRoom;
+    navigation.navigate('ChatScreen');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <AddRoomModal
@@ -120,7 +125,7 @@ const RoomScreen = props => {
           keyExtractor={item => item.id}
           renderItem={value => (
             <View>
-              <Pressable>
+              <Pressable onPress={goToChatScreen.bind(this, value.item)}>
                 <Card>
                   <View style={styles.cardBody}>
                     <View style={styles.roomItem}>
