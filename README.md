@@ -167,3 +167,8 @@ callNativeSyncHook(
   }
 
   // https://stackoverflow.com/questions/61067004/invariant-violation-calling-synchronous-methods-on-native-modules-is-not-suppor
+
+
+##run these command before run pod install
+sudo arch -x86_64 gem install ffi
+arch -x86_64 pod install
