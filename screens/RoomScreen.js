@@ -46,9 +46,10 @@ const RoomScreen = props => {
         });
         data.sort((a, b) => b.createdDate - a.createdDate);
         setRooms(data);
+        appCtx.roomList = data;
       });
     return () => subscriber();
-  }, [getUserInfo, uid, isFocused]);
+  }, [getUserInfo, uid, isFocused, appCtx]);
 
   useLayoutEffect(() => {
     navigation.setOptions({

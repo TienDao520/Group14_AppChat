@@ -4,7 +4,7 @@ import UserField from '../components/UserField';
 import useAppContext from '../store/app-context';
 import firestore from '@react-native-firebase/firestore';
 
-const AddRoomModal = props => {
+const AddUserModal = props => {
   const usersFieldRef = useRef();
   const selectedRoom = useAppContext().selectedRoom;
 
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddRoomModal;
+export default AddUserModal;
