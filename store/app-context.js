@@ -3,6 +3,7 @@ import React from 'react';
 const AppContext = React.createContext({
   userInfo: {},
   selectedRoom: {},
+  roomList: [],
 });
 
 export const AppContextProvider = props => {
@@ -11,6 +12,7 @@ export const AppContextProvider = props => {
       value={{
         userInfo: {},
         selectedRoom: {},
+        roomList: [],
       }}>
       {props.children}
     </AppContext.Provider>
