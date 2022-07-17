@@ -9,7 +9,7 @@ const MessageInput = () => {
   const user = appCtx.userInfo;
   const [message, setMessage] = useState('');
 
-  const sendMessage = () => {
+  const sendMessage = props => {
     if (!message) {
       return;
     }
@@ -24,6 +24,7 @@ const MessageInput = () => {
       .add(newMessage)
       .then(() => {
         setMessage('');
+        props.messageSent();
       });
   };
 

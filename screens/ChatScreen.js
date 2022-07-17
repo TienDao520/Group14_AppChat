@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -19,6 +19,7 @@ import Card from '../components/Card';
 
 const ChatScreen = ({navigation}) => {
   const {selectedRoom, userInfo} = useAppContext();
+  const messageList = useRef();
   const roomId = selectedRoom.id;
   const [isShowAddUserModal, setIsShowAddUserModal] = useState(false);
   const [isShowShareMessageModal, setIsShowShareMessageModal] = useState(false);
@@ -58,6 +59,7 @@ const ChatScreen = ({navigation}) => {
         });
         data.sort((a, b) => a.createdDate - b.createdDate);
         setMessages(data);
+        scrollToEnd();
       });
     return () => subscriber();
   }, [roomId, isFocused]);
@@ -90,6 +92,10 @@ const ChatScreen = ({navigation}) => {
         Alert.alert('Info', 'Message deleted successfully!');
       });
   };
+
+  const scrollToEnd = () => {
+    messageList.current.scrollToEnd({animated: true});
+  };
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -103,8 +109,10 @@ const ChatScreen = ({navigation}) => {
           sharedMessage={sharedMessage}
         />
         <FlatList
+          ref={messageList}
           data={messages}
           keyExtractor={item => item.id}
+          onLayout={scrollToEnd}
           renderItem={value => (
             <View
               style={[
@@ -148,7 +156,7 @@ const ChatScreen = ({navigation}) => {
             </View>
           )}
         />
-        <MessageInput />
+        <MessageInput messageSent={scrollToEnd} />
       </View>
     </SafeAreaView>
   );
