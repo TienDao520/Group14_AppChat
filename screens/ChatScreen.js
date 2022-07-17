@@ -7,6 +7,7 @@ import {
   Text,
   StyleSheet,
   Pressable,
+  Alert,
 } from 'react-native';
 import useAppContext from '../store/app-context';
 import AddUserModal from '../components/AddUserModal';
@@ -16,7 +17,7 @@ import {useIsFocused} from '@react-navigation/native';
 import Card from '../components/Card';
 
 const ChatScreen = ({navigation}) => {
-  const {selectedRoom} = useAppContext();
+  const {selectedRoom, userInfo} = useAppContext();
   const roomId = selectedRoom.id;
   const [isShowAddUserModal, setIsShowAddUserModal] = useState(false);
   const [messages, setMessages] = useState([]);
@@ -70,6 +71,16 @@ const ChatScreen = ({navigation}) => {
     const date = new Date(+timeString).toDateString();
     return date;
   };
+
+  const deleteMessage = messageId => {
+    firestore()
+      .collection('Messages')
+      .doc(messageId)
+      .delete()
+      .then(() => {
+        Alert.alert('Info', 'Message deleted successfully!');
+      });
+  };
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -81,20 +92,31 @@ const ChatScreen = ({navigation}) => {
           data={messages}
           keyExtractor={item => item.id}
           renderItem={value => (
-            <View>
+            <View
+              style={[
+                styles.listContent,
+                userInfo.uid === value.item.uid && styles.flexJustifyContentEnd,
+              ]}>
               <Card style={styles.card}>
                 <View style={styles.cardBody}>
-                  <Image
-                    style={styles.avatar}
-                    source={{uri: value.item.image}}
-                  />
-                  <View>
-                    <View style={styles.userInfo}>
-                      <Text>{value.item.userName}</Text>
-                      <Text>{convertTimeToDate(value.item.createdDate)}</Text>
+                  <View style={styles.messageContainer}>
+                    <Image
+                      style={styles.avatar}
+                      source={{uri: value.item.image}}
+                    />
+                    <View>
+                      <View style={styles.userInfo}>
+                        <Text>{value.item.userName}</Text>
+                        <Text>{convertTimeToDate(value.item.createdDate)}</Text>
+                      </View>
+                      <Text>{value.item.message}</Text>
                     </View>
-                    <Text>{value.item.message}</Text>
                   </View>
+                  <Pressable
+                    style={styles.deleteButton}
+                    onPress={deleteMessage.bind(this, value.item.id)}>
+                    <Text>X</Text>
+                  </Pressable>
                 </View>
               </Card>
             </View>
@@ -115,6 +137,13 @@ const styles = StyleSheet.create({
     padding: 5,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  listContent: {
+    flexDirection: 'row',
+  },
+  messageContainer: {
+    flexDirection: 'row',
   },
   card: {
     width: '70%',
@@ -134,6 +163,14 @@ const styles = StyleSheet.create({
     height: 30,
     marginEnd: 20,
     borderRadius: 50,
+  },
+  deleteButton: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 7,
+    paddingTop: 2,
+  },
+  flexJustifyContentEnd: {
+    justifyContent: 'flex-end',
   },
 });
 
