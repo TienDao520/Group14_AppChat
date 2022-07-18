@@ -96,6 +96,14 @@ const ChatScreen = ({navigation}) => {
   const scrollToEnd = () => {
     messageList.current.scrollToEnd({animated: true});
   };
+
+  const renderAvatar = messageInfo => {
+    if (messageInfo.image) {
+      return <Image style={styles.avatar} source={{uri: messageInfo.image}} />;
+    }
+    return <Text style={styles.listInitials}>{messageInfo.userName[0]}</Text>;
+  };
+
   return (
     <SafeAreaView>
       <View style={styles.container}>
@@ -123,10 +131,9 @@ const ChatScreen = ({navigation}) => {
               <Card style={styles.card}>
                 <View style={styles.cardBody}>
                   <View style={styles.messageContainer}>
-                    <Image
-                      style={styles.avatar}
-                      source={{uri: value.item.image}}
-                    />
+                    <View style={styles.listIcon}>
+                      {renderAvatar(value.item)}
+                    </View>
                     <View style={styles.messageContent}>
                       <View style={styles.userInfo}>
                         <Text>{value.item.userName}</Text>
@@ -179,16 +186,21 @@ const styles = StyleSheet.create({
   messageContainer: {
     flexDirection: 'row',
     flex: 1,
+    alignItems: 'center',
   },
   card: {
     width: '70%',
     justifyContent: 'flex-end',
   },
-  avatar: {
+  listIcon: {
+    borderRadius: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.38)',
     height: 40,
     width: 40,
-    borderRadius: 25,
-    margin: 5,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 10,
   },
   userInfo: {
     flexDirection: 'row',
@@ -220,6 +232,15 @@ const styles = StyleSheet.create({
   },
   messageContent: {
     width: '90%',
+  },
+  avatar: {
+    height: 40,
+    width: 40,
+  },
+  listInitials: {
+    fontSize: 20,
+    lineHeight: 24,
+    color: '#fff',
   },
 });
 
