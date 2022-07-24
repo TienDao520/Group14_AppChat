@@ -16,7 +16,7 @@ export const AppContextProvider = props => {
         roomList: [],
         systemSetting: {
           fontSize: 25,
-          fontType: 'normal',
+          fontWeight: 'normal',
         },
         // systemSetting: {},
       }}>
