@@ -138,18 +138,23 @@ const SignInScreen = props => {
         </View>
         <View style={styles.criteriaContainer}>
           <View>
-            <Text>Email</Text>
+            <Text
+              style={
+                textStyle({size: appCtx.systemSetting.fontSize}).textLabel
+              }>
+              Email
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, styles.textLabel]}
               value={email}
               onChangeText={value => setEmail(value)}
             />
           </View>
           <View>
-            <Text>Password</Text>
+            <Text style={styles.textLabel}>Password</Text>
             <TextInput
               secureTextEntry={true}
-              style={styles.input}
+              style={[styles.input, styles.textLabel]}
               value={password}
               onChangeText={value => setPassword(value)}
             />
@@ -185,6 +190,9 @@ const SignInScreen = props => {
 };
 
 const styles = StyleSheet.create({
+  textLabel: {
+    fontSize: 18,
+  },
   container: {
     backgroundColor: 'white',
     height: '100%',
@@ -213,4 +221,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const textStyle = props =>
+  StyleSheet.create({
+    textLabel: {
+      // fontSize: props.big ? 25 : 15,
+      fontSize: props.size,
+    },
+  });
+// const textStyle = StyleSheet.compose(page.text, lists.listItem);
 export default SignInScreen;

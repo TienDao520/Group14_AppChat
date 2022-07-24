@@ -14,9 +14,10 @@ import firestore from '@react-native-firebase/firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useAppContext from '../store/app-context';
 
-const ProfileScreen = () => {
+const SettingScreen = () => {
   const appCtx = useAppContext();
   const [profile, setProfile] = useState(appCtx.userInfo);
+  const [setting, setSetting] = useState(appCtx.systemSetting);
 
   const pickImageHandler = async () => {
     const userImg = await launchImageLibrary({
@@ -33,22 +34,41 @@ const ProfileScreen = () => {
   };
 
   const handleUpdateData = (field, value) => {
-    console.log(field);
-    console.log(value);
-    setProfile(state => ({
-      ...state,
-      [field]: value,
-    }));
+    let parsedVal = Number.parseInt(value);
+    if (Number.isNaN(parsedVal)) {
+      parsedVal = 10;
+    } else if (parsedVal > 30) {
+      parsedVal = 30;
+    } else if (parsedVal < 10) {
+      parsedVal = 10;
+    }
+
+    appCtx.systemSetting = {...appCtx.systemSetting, [field]: parsedVal};
+
+    setSetting(appCtx.systemSetting);
+    // setSetting(state => ({
+    //   ...state,
+    //   [field]: value,
+    // }));
+
+    console.log(setting);
+    console.log(typeof value);
+    console.log(appCtx.systemSetting);
+    console.log(appCtx.systemSetting.fontSize);
   };
 
-  const saveProfile = () => {
-    firestore()
-      .collection('Users')
-      .doc(profile.uid)
-      .update(profile)
-      .then(() => {
-        Alert.alert('Info', 'Update successfully!');
-      });
+  const saveSetting = () => {
+    // firestore()
+    //   .collection('Users')
+    //   .doc(profile.uid)
+    //   .update(profile)
+    //   .then(() => {
+    //     Alert.alert('Info', 'Update successfully!');
+    //   });
+    appCtx.systemSetting = setting;
+    setSetting(appCtx.systemSetting);
+    console.log(appCtx.systemSetting['fontSize']);
+    console.log(appCtx.systemSetting);
   };
 
   return (
@@ -59,22 +79,26 @@ const ProfileScreen = () => {
         </Pressable>
       </View>
       <View>
-        <Text>User name</Text>
+        <Text
+          style={textStyle({size: appCtx.systemSetting.fontSize}).textLabel}>
+          Font Size
+        </Text>
         <TextInput
           style={styles.input}
-          value={profile.userName}
-          onChangeText={handleUpdateData.bind(this, 'userName')}
+          value={setting.fontSize}
+          keyboardType="numeric"
+          onChangeText={handleUpdateData.bind(this, 'fontSize')}
         />
       </View>
-      <View>
-        <Text>Email</Text>
+      {/* <View>
+        <Text>Font Type</Text>
         <TextInput
           style={styles.input}
-          value={profile.email}
-          onChangeText={handleUpdateData.bind(this, 'email')}
+          value={setting.fontType}
+          onChangeText={handleUpdateData.bind(this, 'fontType')}
         />
-      </View>
-      <Button onPress={saveProfile} title="Save" />
+      </View> */}
+      <Button onPress={saveSetting} title="Save" />
     </SafeAreaView>
   );
 };
@@ -104,5 +128,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
-
-export default ProfileScreen;
+const textStyle = props =>
+  StyleSheet.create({
+    textLabel: {
+      // fontSize: props.big ? 25 : 15,
+      fontSize: parseInt(props.size),
+    },
+  });
+export default SettingScreen;

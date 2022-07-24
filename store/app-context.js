@@ -4,6 +4,7 @@ const AppContext = React.createContext({
   userInfo: {},
   selectedRoom: {},
   roomList: [],
+  systemSetting: {},
 });
 
 export const AppContextProvider = props => {
@@ -13,6 +14,11 @@ export const AppContextProvider = props => {
         userInfo: {},
         selectedRoom: {},
         roomList: [],
+        systemSetting: {
+          fontSize: 25,
+          fontType: 'normal',
+        },
+        // systemSetting: {},
       }}>
       {props.children}
     </AppContext.Provider>

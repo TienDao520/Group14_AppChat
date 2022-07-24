@@ -15,6 +15,7 @@ import SignInScreen from '../screens/SignInScreen';
 import RoomScreen from '../screens/RoomScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
+import SettingScreen from '../screens/SettingScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -40,7 +41,7 @@ const CustomDrawerContent = props => {
 
 function AppNavigator() {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles.navigateCenter}>
       <Drawer.Navigator
         initialRouteName="SignInScreen"
         headerMode="screen"
@@ -50,6 +51,7 @@ function AppNavigator() {
             backgroundColor: Platform.OS === 'android' ? 'green' : '',
           },
         }}
+        style={styles.navigateCenter}
         drawerContent={props => <CustomDrawerContent {...props} />}>
         <Drawer.Screen
           name="SignInScreen"
@@ -122,12 +124,29 @@ function AppNavigator() {
             },
           }}
         />
+
+        <Drawer.Screen
+          name="SettingScreen"
+          component={SettingScreen}
+          options={{
+            headerTitle: () => (
+              <View style={styles.loginHeader}>
+                <Text style={styles.headerTitle}>Group Chat</Text>
+                <Text style={styles.headerTitle}>Group 14</Text>
+              </View>
+            ),
+            title: 'Setting',
+          }}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
+  navigateCenter: {
+    fontSize: 45,
+  },
   loginHeader: {
     flex: 1,
     alignItems: 'center',
