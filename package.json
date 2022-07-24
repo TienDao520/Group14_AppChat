@@ -27,7 +27,8 @@
     "react-native-material-selectize": "^1.18.0",
     "react-native-reanimated": "^2.8.0",
     "react-native-safe-area-context": "^4.3.1",
-    "react-native-screens": "^3.13.1"
+    "react-native-screens": "^3.13.1",
+    "react-native-select-dropdown": "^2.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
