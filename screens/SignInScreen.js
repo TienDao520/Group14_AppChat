@@ -18,6 +18,7 @@ import {auth, firestore} from '../firebase/config';
 import {addDocument} from '../firebase/services';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import useAppContext from '../store/app-context';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 
@@ -26,8 +27,7 @@ const SignInScreen = props => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [isLoading, setIsLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState();
-  let isNewUser = false;
+  const appCtx = useAppContext();
 
   //Google configuration
   GoogleSignin.configure({
@@ -48,49 +48,22 @@ const SignInScreen = props => {
   // GoogleSignin.configure();
 
   useEffect(() => {
-    auth().onAuthStateChanged(userData => {
-      console.log('user: ', userData);
-      if (userData != null) {
-        console.log('The return user information: ', userData);
-        //ToDo: navigate to room page
-        const {displayName, email, uid, photoURL} = userData;
-        setUserInfo({
-          displayName,
-          email,
-          uid,
-          photoURL,
-        });
-        navigation.navigate('RoomScreen', {
-          noteFromLogin: {displayName, email, uid, photoURL},
-        });
+    const subscriber = auth().onAuthStateChanged(user => {
+      if (user != null) {
+        AsyncStorage.setItem('userUid', user.uid);
+        appCtx.userInfo.uid = user.uid;
+        goToRoomScreen();
       }
     });
-    async function fetchToken() {
-      const token = await AsyncStorage.getItem('token');
-      if (token !== '') {
-        //ToDo: navigate to room page
-      }
-    }
-    fetchToken();
-  }, [navigation]);
-
-  const setToken = firebaseUser => {
-    firebaseUser.user
-      .getIdToken()
-      .then(async token => {
-        await AsyncStorage.setItem('token', token);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  };
+    return subscriber;
+  }, []);
 
   const loginWithFirebase = () => {
     setIsLoading(true);
     auth()
       .signInWithEmailAndPassword(email, password)
       .then(function (_firebaseUser) {
-        setToken(_firebaseUser);
+        setIsLoading(false);
         goToRoomScreen();
       })
       .catch(function (error) {
@@ -131,18 +104,8 @@ const SignInScreen = props => {
     // Sign-in the user with the credential
     const response = auth().signInWithCredential(facebookCredential);
     response.then(responseData => {
-      console.log('data: ', responseData);
-      const {additionalUserInfo, user} = responseData;
-      if (additionalUserInfo?.isNewUser) {
-        // firestore().collection('users').add();
-        addDocument('users', {
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL,
-          providerId: additionalUserInfo.providerId,
-        });
-      }
+      AccessToken.setItem('userUid', responseData.uid);
+      navigation.navigate('RoomScreen');
     });
   };
 
@@ -156,19 +119,8 @@ const SignInScreen = props => {
     // Sign-in the user with the credential
     const response = auth().signInWithCredential(googleCredential);
     response.then(responseData => {
-      console.log('data: ', responseData);
-      // navigation.navigate('RoomScreen');
-      const {additionalUserInfo, user} = responseData;
-      if (additionalUserInfo?.isNewUser) {
-        // firestore().collection('users').add();
-        addDocument('users', {
-          displayName: user.displayName,
-          email: user.email,
-          uid: user.uid,
-          photoURL: user.photoURL,
-          providerId: additionalUserInfo.providerId,
-        });
-      }
+      AccessToken.setItem('userUid', responseData.uid);
+      navigation.navigate('RoomScreen');
     });
   }
 
@@ -191,18 +143,23 @@ const SignInScreen = props => {
         </View>
         <View style={styles.criteriaContainer}>
           <View>
-            <Text>Email</Text>
+            <Text
+              style={
+                textStyle({size: appCtx.systemSetting.fontSize}).textLabel
+              }>
+              Email
+            </Text>
             <TextInput
-              style={styles.input}
+              style={[styles.input, styles.textLabel]}
               value={email}
               onChangeText={value => setEmail(value)}
             />
           </View>
           <View>
-            <Text>Password</Text>
+            <Text style={styles.textLabel}>Password</Text>
             <TextInput
               secureTextEntry={true}
-              style={styles.input}
+              style={[styles.input, styles.textLabel]}
               value={password}
               onChangeText={value => setPassword(value)}
             />
@@ -238,6 +195,9 @@ const SignInScreen = props => {
 };
 
 const styles = StyleSheet.create({
+  textLabel: {
+    fontSize: 18,
+  },
   container: {
     backgroundColor: 'white',
     height: '100%',
@@ -266,4 +226,12 @@ const styles = StyleSheet.create({
   },
 });
 
+const textStyle = props =>
+  StyleSheet.create({
+    textLabel: {
+      // fontSize: props.big ? 25 : 15,
+      fontSize: props.size,
+    },
+  });
+// const textStyle = StyleSheet.compose(page.text, lists.listItem);
 export default SignInScreen;

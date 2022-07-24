@@ -10,14 +10,18 @@ import {
   SafeAreaView,
   ScrollView,
 } from 'react-native';
-// import {auth} from '../FirebaseConfig';
-import {auth} from '../firebase/config';
+import useAppContext from '../store/app-context';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUpScreen = props => {
   const {navigation} = props;
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [userName, setUserName] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const appCtx = useAppContext();
 
   const registerWithFirebase = () => {
     const emailRegex = /\S+@\S+\.\S+/;
@@ -34,11 +38,13 @@ const SignUpScreen = props => {
     setIsLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(function (_firebaseUser) {
+      .then(({user}) => {
         Alert.alert('user registered!');
         setEmail('');
         setPassword('');
-        navigation.navigate('SignInScreen');
+        setUserName('');
+        createProfile(user.uid);
+        setIsLoading(false);
       })
       .catch(function (error) {
         var errorCode = error.code;
@@ -49,6 +55,22 @@ const SignUpScreen = props => {
         } else {
           Alert.alert(errorMessage);
         }
+      });
+  };
+
+  const createProfile = uid => {
+    firestore()
+      .collection('Users')
+      .doc(uid)
+      .set({
+        email: email,
+        userName: userName,
+        uid: uid,
+      })
+      .then(async () => {
+        await AsyncStorage.setItem('userUid', uid);
+        appCtx.userInfo.uid = uid;
+        navigation.navigate('RoomScreen');
       });
   };
 
@@ -68,6 +90,14 @@ const SignUpScreen = props => {
               style={styles.input}
               value={email}
               onChangeText={value => setEmail(value)}
+            />
+          </View>
+          <View>
+            <Text>User name</Text>
+            <TextInput
+              style={styles.input}
+              value={userName}
+              onChangeText={value => setUserName(value)}
             />
           </View>
           <View>
