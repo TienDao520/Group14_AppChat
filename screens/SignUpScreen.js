@@ -14,6 +14,7 @@ import useAppContext from '../store/app-context';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {textStyle} from '../styles/textStyle';
 
 const SignUpScreen = props => {
   const {navigation} = props;
@@ -84,8 +85,22 @@ const SignUpScreen = props => {
           />
         </View>
         <View style={styles.criteriaContainer}>
-          <View>
-            <Text>Email</Text>
+          <View
+            style={
+              textStyle({
+                textSize: appCtx.systemSetting.fontSize,
+                textWeight: appCtx.systemSetting.fontWeight,
+              }).textLabel
+            }>
+            <Text
+              style={
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel
+              }>
+              Email
+            </Text>
             <TextInput
               style={styles.input}
               value={email}
@@ -93,7 +108,15 @@ const SignUpScreen = props => {
             />
           </View>
           <View>
-            <Text>User name</Text>
+            <Text
+              style={
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel
+              }>
+              User name
+            </Text>
             <TextInput
               style={styles.input}
               value={userName}
@@ -101,7 +124,15 @@ const SignUpScreen = props => {
             />
           </View>
           <View>
-            <Text>Password</Text>
+            <Text
+              style={
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel
+              }>
+              Password
+            </Text>
             <TextInput
               secureTextEntry={true}
               style={styles.input}

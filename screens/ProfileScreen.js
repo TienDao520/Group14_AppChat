@@ -13,6 +13,7 @@ import {
 import firestore from '@react-native-firebase/firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useAppContext from '../store/app-context';
+import {textStyle} from '../styles/textStyle';
 
 const ProfileScreen = () => {
   const appCtx = useAppContext();
@@ -59,7 +60,15 @@ const ProfileScreen = () => {
         </Pressable>
       </View>
       <View>
-        <Text>User name</Text>
+        <Text
+          style={
+            textStyle({
+              textSize: appCtx.systemSetting.fontSize,
+              textWeight: appCtx.systemSetting.fontWeight,
+            }).textLabel
+          }>
+          User name
+        </Text>
         <TextInput
           style={styles.input}
           value={profile.userName}
@@ -67,7 +76,15 @@ const ProfileScreen = () => {
         />
       </View>
       <View>
-        <Text>Email</Text>
+        <Text
+          style={
+            textStyle({
+              textSize: appCtx.systemSetting.fontSize,
+              textWeight: appCtx.systemSetting.fontWeight,
+            }).textLabel
+          }>
+          Email
+        </Text>
         <TextInput
           style={styles.input}
           value={profile.email}

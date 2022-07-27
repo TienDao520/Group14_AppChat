@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import useAppContext from '../store/app-context';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import {textStyle} from '../styles/textStyle';
 
 const SignInScreen = props => {
   const {navigation} = props;
@@ -140,21 +141,44 @@ const SignInScreen = props => {
           <View>
             <Text
               style={
-                textStyle({size: appCtx.systemSetting.fontSize}).textLabel
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel
               }>
               Email
             </Text>
             <TextInput
-              style={[styles.input, styles.textLabel]}
+              style={[
+                styles.input,
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel,
+              ]}
               value={email}
               onChangeText={value => setEmail(value)}
             />
           </View>
           <View>
-            <Text style={styles.textLabel}>Password</Text>
+            <Text
+              style={
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel
+              }>
+              Password
+            </Text>
             <TextInput
               secureTextEntry={true}
-              style={[styles.input, styles.textLabel]}
+              style={[
+                styles.input,
+                textStyle({
+                  textSize: appCtx.systemSetting.fontSize,
+                  textWeight: appCtx.systemSetting.fontWeight,
+                }).textLabel,
+              ]}
               value={password}
               onChangeText={value => setPassword(value)}
             />
@@ -221,12 +245,12 @@ const styles = StyleSheet.create({
   },
 });
 
-const textStyle = props =>
-  StyleSheet.create({
-    textLabel: {
-      // fontSize: props.big ? 25 : 15,
-      fontSize: props.size,
-    },
-  });
+// const textStyle = props =>
+//   StyleSheet.create({
+//     textLabel: {
+//       // fontSize: props.big ? 25 : 15,
+//       fontSize: props.size,
+//     },
+//   });
 // const textStyle = StyleSheet.compose(page.text, lists.listItem);
 export default SignInScreen;

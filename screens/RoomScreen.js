@@ -14,6 +14,7 @@ import Card from '../components/Card';
 import useAppContext from '../store/app-context';
 import firestore from '@react-native-firebase/firestore';
 import {useIsFocused} from '@react-navigation/native';
+import {textStyle} from '../styles/textStyle';
 
 const RoomScreen = props => {
   const {navigation} = props;
@@ -119,7 +120,16 @@ const RoomScreen = props => {
                 <Card>
                   <View style={styles.cardBody}>
                     <View style={styles.roomItem}>
-                      <Text style={styles.title}>{value.item.title}</Text>
+                      <Text
+                        style={[
+                          styles.title,
+                          textStyle({
+                            textSize: appCtx.systemSetting.fontSize,
+                            textWeight: appCtx.systemSetting.fontWeight,
+                          }).textLabel,
+                        ]}>
+                        {value.item.title}
+                      </Text>
                       <Text ellipsizeMode="tail" numberOfLines={2}>
                         {value.item.description}
                       </Text>

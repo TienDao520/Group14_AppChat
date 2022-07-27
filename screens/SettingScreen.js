@@ -110,13 +110,17 @@ const SettingScreen = () => {
           style={styles.input}
           value={setting.fontSize}
           keyboardType="numeric"
+          placeholder="15"
           onChangeText={handleUpdateDataTextSize.bind(this, 'fontSize')}
         />
       </View>
       <View>
         <Text
           style={
-            textStyle({textSize: appCtx.systemSetting.fontSize}).textLabel
+            textStyle({
+              textSize: appCtx.systemSetting.fontSize,
+              textWeight: appCtx.systemSetting.fontWeight,
+            }).textLabel
           }>
           Font Type
         </Text>
@@ -184,11 +188,5 @@ const styles = StyleSheet.create({
     marginVertical: 12,
   },
 });
-// const textStyle = props =>
-//   StyleSheet.create({
-//     textLabel: {
-//       // fontSize: props.big ? 25 : 15,
-//       fontSize: parseInt(props.size),
-//     },
-//   });
+
 export default SettingScreen;

@@ -16,6 +16,7 @@ import MessageInput from '../components/MessageInput';
 import firestore from '@react-native-firebase/firestore';
 import {useIsFocused} from '@react-navigation/native';
 import Card from '../components/Card';
+import {textStyle} from '../styles/textStyle';
 
 const ChatScreen = ({navigation}) => {
   const {selectedRoom, userInfo} = useAppContext();
@@ -26,6 +27,7 @@ const ChatScreen = ({navigation}) => {
   const [messages, setMessages] = useState([]);
   const [sharedMessage, setShareMessage] = useState();
   const isFocused = useIsFocused();
+  const appCtx = useAppContext();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -134,8 +136,15 @@ const ChatScreen = ({navigation}) => {
                     <View style={styles.listIcon}>
                       {renderAvatar(value.item)}
                     </View>
-                    <View style={styles.messageContent}>
-                      <View style={styles.userInfo}>
+                    <View style={[styles.messageContent]}>
+                      <View
+                        style={[
+                          styles.userInfo,
+                          textStyle({
+                            textSize: appCtx.systemSetting.fontSize,
+                            textWeight: appCtx.systemSetting.fontWeight,
+                          }).textLabel,
+                        ]}>
                         <Text>{value.item.userName}</Text>
                         <Text>{convertTimeToDate(value.item.createdDate)}</Text>
                       </View>
