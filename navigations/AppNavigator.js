@@ -16,6 +16,7 @@ import RoomScreen from '../screens/RoomScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import ChatScreen from '../screens/ChatScreen';
 import SettingScreen from '../screens/SettingScreen';
+import GuidelineScreen from '../screens/GuidelineScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -136,6 +137,19 @@ function AppNavigator() {
               </View>
             ),
             title: 'Setting',
+          }}
+        />
+        <Drawer.Screen
+          name="GuidelineScreen"
+          component={GuidelineScreen}
+          options={{
+            headerTitle: () => (
+              <View style={styles.loginHeader}>
+                <Text style={styles.headerTitle}>Group Chat</Text>
+                <Text style={styles.headerTitle}>Group 14</Text>
+              </View>
+            ),
+            title: 'Introduction',
           }}
         />
       </Drawer.Navigator>
