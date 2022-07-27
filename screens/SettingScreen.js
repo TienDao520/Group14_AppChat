@@ -15,6 +15,7 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import useAppContext from '../store/app-context';
 import SelectDropdown from 'react-native-select-dropdown';
 import {textStyle} from '../styles/textStyle';
+const buttonColor = '#008000';
 
 const SettingScreen = () => {
   const appCtx = useAppContext();
@@ -146,7 +147,7 @@ const SettingScreen = () => {
           />
         </View>
       </View>
-      <Button onPress={saveSetting} title="Save" />
+      <Button onPress={saveSetting} title="Save" color={buttonColor} />
     </SafeAreaView>
   );
 };

@@ -15,6 +15,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {textStyle} from '../styles/textStyle';
+const buttonColor = '#008000';
 
 const SignUpScreen = props => {
   const {navigation} = props;
@@ -145,6 +146,7 @@ const SignUpScreen = props => {
               title="Sign Up"
               disabled={isLoading || (!email && !password)}
               onPress={registerWithFirebase}
+              color={buttonColor}
             />
           </View>
         </View>

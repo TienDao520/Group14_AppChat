@@ -14,6 +14,7 @@ import firestore from '@react-native-firebase/firestore';
 import {launchImageLibrary} from 'react-native-image-picker';
 import useAppContext from '../store/app-context';
 import {textStyle} from '../styles/textStyle';
+const buttonColor = '#008000';
 
 const ProfileScreen = () => {
   const appCtx = useAppContext();
@@ -91,7 +92,7 @@ const ProfileScreen = () => {
           onChangeText={handleUpdateData.bind(this, 'email')}
         />
       </View>
-      <Button onPress={saveProfile} title="Save" />
+      <Button onPress={saveProfile} title="Save" color={buttonColor} />
     </SafeAreaView>
   );
 };

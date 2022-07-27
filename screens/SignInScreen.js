@@ -17,7 +17,7 @@ import useAppContext from '../store/app-context';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import {textStyle} from '../styles/textStyle';
-
+const buttonColor = '#008000';
 const SignInScreen = props => {
   const {navigation} = props;
   const [email, setEmail] = useState();
@@ -188,6 +188,7 @@ const SignInScreen = props => {
               title="Sign In"
               disabled={isLoading || (!email && !password)}
               onPress={loginWithFirebase}
+              color={buttonColor}
             />
           </View>
           <View style={styles.button}>
@@ -195,6 +196,7 @@ const SignInScreen = props => {
               title="Sign In With Google"
               disabled={isLoading}
               onPress={loginWithGoogle}
+              color={buttonColor}
             />
           </View>
           <View style={styles.button}>
@@ -202,10 +204,16 @@ const SignInScreen = props => {
               title="Sign In With Facebook"
               disabled={isLoading}
               onPress={loginWithFacebook}
+              color={buttonColor}
             />
           </View>
           <View style={styles.button}>
-            <Button title="Sign Up" onPress={goToSignUpScreen} />
+            <Button
+              style={styles.buttonStyle}
+              title="Sign Up"
+              onPress={goToSignUpScreen}
+              color={buttonColor}
+            />
           </View>
         </View>
       </ScrollView>
