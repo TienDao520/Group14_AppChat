@@ -2,20 +2,11 @@ import React, {useState} from 'react';
 import {
   Text,
   View,
-  TextInput,
-  Pressable,
   Image,
   StyleSheet,
   SafeAreaView,
-  Button,
-  Alert,
   ScrollView,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import {launchImageLibrary} from 'react-native-image-picker';
-import useAppContext from '../store/app-context';
-import SelectDropdown from 'react-native-select-dropdown';
-import {textStyle} from '../styles/textStyle';
 const buttonColor = '#008000';
 
 const SettingScreen = () => {
@@ -47,7 +38,7 @@ const SettingScreen = () => {
 
           <Image
             source={require('../assets/images/Guideline_SettingScreen.png')}
-            style={{width: 260, height: 360}}
+            style={{width: 260, height: 160}}
           />
         </View>
       </ScrollView>

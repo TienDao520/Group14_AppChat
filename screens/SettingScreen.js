@@ -3,15 +3,10 @@ import {
   Text,
   View,
   TextInput,
-  Pressable,
-  Image,
   StyleSheet,
   SafeAreaView,
   Button,
-  Alert,
 } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import {launchImageLibrary} from 'react-native-image-picker';
 import useAppContext from '../store/app-context';
 import SelectDropdown from 'react-native-select-dropdown';
 import {textStyle} from '../styles/textStyle';
@@ -19,7 +14,6 @@ const buttonColor = '#008000';
 
 const SettingScreen = () => {
   const appCtx = useAppContext();
-  const [profile, setProfile] = useState(appCtx.userInfo);
   const [setting, setSetting] = useState(appCtx.systemSetting);
   const fontWeightList = ['bold', 'normal'];
 
@@ -46,10 +40,6 @@ const SettingScreen = () => {
     appCtx.systemSetting = {...appCtx.systemSetting, [field]: value};
 
     setSetting(appCtx.systemSetting);
-    // setSetting(state => ({
-    //   ...state,
-    //   [field]: value,
-    // }));
 
     console.log(setting);
     console.log(typeof value);
