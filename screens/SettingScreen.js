@@ -23,20 +23,6 @@ const SettingScreen = () => {
   const [setting, setSetting] = useState(appCtx.systemSetting);
   const fontWeightList = ['bold', 'normal'];
 
-  const pickImageHandler = async () => {
-    const userImg = await launchImageLibrary({
-      mediaType: 'photo',
-      includeBase64: true,
-      maxHeight: 200,
-      maxWidth: 200,
-    });
-    if (!userImg.assets?.length) {
-      return;
-    }
-    const base64Image = `data:image/png;base64,${userImg.assets[0].base64}`;
-    setProfile({...profile, image: base64Image});
-  };
-
   const handleUpdateDataTextSize = (field, value) => {
     let parsedVal = Number.parseInt(value);
     if (Number.isNaN(parsedVal)) {
@@ -50,11 +36,6 @@ const SettingScreen = () => {
     appCtx.systemSetting = {...appCtx.systemSetting, [field]: parsedVal};
 
     setSetting(appCtx.systemSetting);
-    // setSetting(state => ({
-    //   ...state,
-    //   [field]: value,
-    // }));
-
     console.log(setting);
     console.log(typeof value);
     console.log(appCtx.systemSetting);
@@ -77,13 +58,6 @@ const SettingScreen = () => {
   };
 
   const saveSetting = () => {
-    // firestore()
-    //   .collection('Users')
-    //   .doc(profile.uid)
-    //   .update(profile)
-    //   .then(() => {
-    //     Alert.alert('Info', 'Update successfully!');
-    //   });
     appCtx.systemSetting = setting;
     setSetting(appCtx.systemSetting);
     console.log(appCtx.systemSetting['fontSize']);
@@ -92,11 +66,6 @@ const SettingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.avatarContainer}>
-        <Pressable style={styles.imagePressable} onPress={pickImageHandler}>
-          <Image style={styles.avatar} source={{uri: profile.image}} />
-        </Pressable>
-      </View>
       <View>
         <Text
           style={
@@ -158,19 +127,6 @@ const styles = StyleSheet.create({
     height: '100%',
     padding: 10,
   },
-  avatar: {
-    height: 200,
-    width: 200,
-    borderRadius: 100,
-    borderWidth: 1,
-    borderColor: 'grey',
-  },
-  avatarContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: '10%',
-  },
   input: {
     marginVertical: 12,
     borderWidth: 1,
@@ -180,7 +136,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 50,
     backgroundColor: '#FFF',
-    // borderRadius: 8,
     borderWidth: 1,
     borderColor: '#444',
   },
